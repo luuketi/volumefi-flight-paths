@@ -12,8 +12,64 @@ describe('Testing /calculate route', () => {
             .expect(400)
             .end((err, response) => {
                 const errors = response.body.errors;
-                expect(errors.length).to.equal(1);
-                expect(errors[0].msg).to.eq('Array of flights is required');
+                expect(4).to.equal(errors.length);
+                expect('List of flights is required').to.eq(errors[0].msg);
+                expect('List of flights can\'t be empty').to.eq(errors[1].msg);
+                expect('Flight must have two elements').to.eq(errors[2].msg);
+                expect('Flight departure and arrivals must be string').to.eq(errors[3].msg);
+                done(err);
+            });
+    });
+
+    it('POST empty list is 400', (done) => {
+        request(app)
+            .post('/calculate')
+            .send([])
+            .expect(400)
+            .end((err, response) => {
+                const errors = response.body.errors;
+                expect(1).to.equal(errors.length);
+                expect('List of flights can\'t be empty').to.eq(errors[0].msg);
+                done(err);
+            });
+    });
+
+    it('POST list of empty list is 400', (done) => {
+        request(app)
+            .post('/calculate')
+            .send([[]])
+            .expect(400)
+            .end((err, response) => {
+                const errors = response.body.errors;
+                expect(1).to.equal(errors.length);
+                expect('Flight must have two elements').to.eq(errors[0].msg);
+                done(err);
+            });
+    });
+
+    it('POST list of list of int is 400', (done) => {
+        request(app)
+            .post('/calculate')
+            .send([[1]])
+            .expect(400)
+            .end((err, response) => {
+                const errors = response.body.errors;
+                expect(2).to.equal(errors.length);
+                expect('Flight must have two elements').to.eq(errors[0].msg);
+                expect('Flight departure and arrivals must be string').to.eq(errors[1].msg);
+                done(err);
+            });
+    });
+
+    it('POST array of array of str is 400', (done) => {
+        request(app)
+            .post('/calculate')
+            .send([["A"]])
+            .expect(400)
+            .end((err, response) => {
+                const errors = response.body.errors;
+                expect(1).to.equal(errors.length);
+                expect('Flight must have two elements').to.eq(errors[0].msg);
                 done(err);
             });
     });

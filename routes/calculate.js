@@ -5,7 +5,10 @@ const router = Router();
 
 const calculatePayloadValidation = () => {
     return [
-        body().isArray().withMessage('Array of flights is required'),
+        body().isArray().withMessage('List of flights is required'),
+        body().custom(arr => arr.length > 0).withMessage('List of flights can\'t be empty'),
+        body().custom(arr => arr.every(item => item.length === 2)).withMessage('Flight must have two elements'),
+        body().custom(arr => arr.every(item => item.every(element => typeof element === 'string'))).withMessage('Flight departure and arrivals must be string'),
     ]
 };
 
