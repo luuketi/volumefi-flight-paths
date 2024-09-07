@@ -1,13 +1,12 @@
 const express = require('express')
 const app = express()
+const calculate = require('./routes/calculate');
 
 require('dotenv').config();
 
 const port = process.env.PORT || 8080;
 
-app.get('/', (req, res) => {
-    res.send("Hello world")
-})
+app.use('/', calculate);
 
 module.exports = app.listen(port, () => {
     console.log(`App listening on port ${port}`)
