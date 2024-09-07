@@ -20,7 +20,7 @@ router.post('/calculate',
             return res.status(400).json({ errors: errors.array() });
         }
 
-        return res.json({});
+        return res.json(req.body[0]);
 });
 
 module.exports = router;
