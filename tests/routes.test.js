@@ -100,4 +100,30 @@ describe('Testing /calculate route', () => {
             });
     });
 
+    it('POST more flights', (done) => {
+        const flight = [['IND', 'EWR'], ['SFO', 'ATL'], ['GSO', 'IND'], ['ATL', 'GSO']];
+        const expectedResult = ['SFO', 'EWR'];
+        request(app)
+            .post('/calculate')
+            .send(flight)
+            .expect(200)
+            .end((err, response) => {
+                expect(expectedResult).to.deep.eq(response.body);
+                done(err);
+            });
+    });
+
+    it('POST flights with loop', (done) => {
+        const flight = [['GSO', 'SFO'], ['IND', 'EWR'], ['SFO', 'ATL'], ['GSO', 'IND'], ['ATL', 'GSO'], ['ATL', 'GSO'], ['SFO', 'ATL']];
+        const expectedResult = ['SFO', 'EWR'];
+        request(app)
+            .post('/calculate')
+            .send(flight)
+            .expect(200)
+            .end((err, response) => {
+                expect(response.body).to.deep.eq(expectedResult);
+                done(err);
+            });
+    });
+
 });
