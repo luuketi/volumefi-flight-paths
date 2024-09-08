@@ -126,4 +126,27 @@ describe('Testing /calculate route', () => {
             });
     });
 
+    it('POST invalid flight is 400 Bad Request', (done) => {
+        const flight = [['GSO', 'GSO']];
+        request(app)
+            .post('/calculate')
+            .send(flight)
+            .expect(400)
+            .end((err, response) => {
+                expect(['Invalid flights']).to.deep.eq(response.body.errors);
+                done(err);
+            });
+    });
+
+    it('POST invalid flights is 400 Bad Request', (done) => {
+        const flight = [['GSO', 'GSO'], ['EWR', 'EWR']];
+        request(app)
+            .post('/calculate')
+            .send(flight)
+            .expect(400)
+            .end((err, _) => {
+                done(err);
+            });
+    });
+
 });

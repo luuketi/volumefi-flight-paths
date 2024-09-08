@@ -21,7 +21,10 @@ router.post('/calculate',
         }
 
         const route = findRoute(req.body);
-        return res.json(route);
+        if (route !== undefined){
+            return res.json(route);
+        }
+        return res.status(400).json({ errors: ['Invalid flights'] });
 });
 
 function findRoute(flights) {
@@ -39,7 +42,9 @@ function findRoute(flights) {
         }
     }
 
-    return departures.concat(arrivals);
+    if (departures.length === 1 && arrivals.length === 1){
+        return departures.concat(arrivals);
+    }
 }
 
 module.exports = router;
