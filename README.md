@@ -14,7 +14,7 @@ sorted to find the total flight paths starting and ending at airports.
 
 ## Usage
 
-Send POST requests to the `/calculate` endpoint with an array containing the list of flights.
+Send POST requests to the `/calculate` endpoint with an array containing the flights.
 
 ## API Endpoint
 
@@ -26,8 +26,9 @@ Send POST requests to the `/calculate` endpoint with an array containing the lis
 
 #### Response Body
 
-- `start`: The starting airport code.
-- `end`: The ending airport code.
+- An array containing two strings:
+   - The starting airport code.
+   - The ending airport code.
 
 
 ## Install dependencies
@@ -43,10 +44,13 @@ npm install
 npm run start
 ```
 
+The service will run on `http://localhost:8080` by default.
+
+
 ### Sample request
 
 ```bash
-$ curl -i http://localhost:8080/calculate \
+curl -i http://localhost:8080/calculate \
     -H "Content-Type: application/json" \
     -d '[["IND", "EWR"], ["SFO", "ATL"], ["GSO", "IND"], ["ATL", "GSO"]]'  
 ```
