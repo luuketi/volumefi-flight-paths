@@ -87,4 +87,17 @@ describe('Testing /calculate route', () => {
             });
     });
 
+    it('POST two flights', (done) => {
+        const flight = [['ATL', 'EWR'], ['SFO', 'ATL']];
+        const expectedResult = ['SFO', 'EWR'];
+        request(app)
+            .post('/calculate')
+            .send(flight)
+            .expect(200)
+            .end((err, response) => {
+                expect(expectedResult).to.deep.eq(response.body);
+                done(err);
+            });
+    });
+
 });

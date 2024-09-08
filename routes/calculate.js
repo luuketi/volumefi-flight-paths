@@ -20,7 +20,26 @@ router.post('/calculate',
             return res.status(400).json({ errors: errors.array() });
         }
 
-        return res.json(req.body[0]);
+        const route = findRoute(req.body);
+        return res.json(route);
 });
+
+function findRoute(flights) {
+    let departures = flights.map(flight => {return flight[0]});
+    let arrivals = flights.map(flight => {return flight[1]});
+
+    for (let i = departures.length - 1; i >= 0; --i) {
+        const departure = departures[i];
+        if (arrivals.includes(departure)) {
+            departures.splice(i, 1);
+            const index = arrivals.indexOf(departure);
+            if (index >= 0) {
+                arrivals.splice(index, 1);
+            }
+        }
+    }
+
+    return departures.concat(arrivals);
+}
 
 module.exports = router;
